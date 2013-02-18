@@ -1,0 +1,138 @@
+= ArangoDB plugin for Fluentd
+
+fluent-plugin-arango provides write to {ArangoDB}[http://www.arangodb.org/] for {Fluentd}[http://fluentd.org/].
+
+= Install
+
+  $ fluent-gem install fluent-plugin-arango
+
+= Configuration
+
+== Minimum Configuration
+
+  <match access.**>
+    type arango
+    collection my_collection_name
+  </match>
+
+== Supported Configurations
+
+  <match access.**>
+
+    # plugin type
+    type arango
+
+    # required
+    collection my_collection_name
+
+    # optional host-config
+    host localhost
+    port 8529
+
+    # optional auth-config
+    username xxxx
+    password xxxx
+
+    # optional time-config (provided by Fluent::SetTimeKeyMixin)
+    include_time_key true
+    time_key time
+    ##time_format
+    ##localtime
+    ##utc
+
+    # optional tag-config (proviced by Fluent::SetTagKeyMixin)
+    include_tag_key true
+    tag_key tag
+
+    # optinal parent-class-config (proviced by Fluent::BufferedOutput)
+    buffer_type memory
+    flush_interval 60
+    retry_limit 17
+    retry_wait 1.0
+    num_threads 1
+    ##<secondary>
+    ##secondary_limit
+    
+  </match>
+
+= Examples
+
+== Example: Basically Output
+
+*Configure*
+
+  <match hoge>
+    type arango
+    collection fuga
+  </match>
+
+*Result*
+  IN: {"a": 1}
+  OUT: {"a":1, "tag": "hoge", "time": "2013-02-18T12:59:10Z"}
+
+
+== Example: Does not include a time,tag key
+
+*Configure*
+
+  <match hoge>
+    type arango
+    collection fuga
+    include_time_key false
+    include_tag_key false
+  </match>
+
+*Result*
+  IN: {"a": 1}
+  OUT: {"a":1}
+
+== Example: Change time format, and Change time,tag key name
+
+*Configure*
+
+  <match hoge>
+    type arango
+    collection fuga
+    time_format %Y/%m/%d %H:%M:%S
+    time_key mytime
+    tag_key  mytag
+  </match>
+
+*Result*
+  IN: {"a": 1}
+  OUT: {"a":1, "mytag": "hoge", "mytime": "2013/02/18 12:59:10"}
+
+
+== Example: Connect to ArangoDB with authenticate
+
+*Configure*
+
+  <match hoge>
+    type arango
+    collection fuga
+    username your_name
+    password your_pass
+  </match>
+
+= Attention
+
+time and tag is destructive operation.
+( see: http://d.hatena.ne.jp/oranie/20120525/1337942598 )
+
+= TODO
+
+* Bulk import
+* UnitTest for auth
+
+= Dependency Library
+
+* {ashikawa-core}[https://github.com/triAGENS/ashikawa-core/]
+
+
+= Copyright and License
+
+Copyright:: Copyright (c) 2013- tamtam180 <kirscheless _at_ gmail.com>
+License:: Apache License, Version 2.0
+
+
+
