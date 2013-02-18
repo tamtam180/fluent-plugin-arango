@@ -26,6 +26,7 @@ fluent-plugin-arango provides write to {ArangoDB}[http://www.arangodb.org/] for 
     collection my_collection_name
 
     # optional host-config
+    scheme http
     host localhost
     port 8529
 
@@ -116,7 +117,7 @@ fluent-plugin-arango provides write to {ArangoDB}[http://www.arangodb.org/] for 
 
 = Attention
 
-time and tag is destructive operation.
+include_time_key and include_tag_key is destructive operation.
 ( see: http://d.hatena.ne.jp/oranie/20120525/1337942598 )
 
 = TODO
