@@ -42,16 +42,10 @@ class ArangoOutputTest < Test::Unit::TestCase
   end
 
   def test_configure_no_parameter
-    # assert_throws .. 
-    begin
+    assert_raise(Fluent::ConfigError) do
       driver = create_driver(%[
         type arango
       ])
-      flunk "fail"
-    rescue Fluent::ConfigError
-      assert_equal $!.message, "'collection' parameter is required"
-    rescue
-      flunk "fail"
     end
   end
 
